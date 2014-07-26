@@ -16,6 +16,7 @@ source-repository head
 
 library
   hs-source-dirs:   src
-  exposed-modules:  PathFindingCore.Coordinate, PathFindingCore.PathingMap.Direction
+  exposed-modules:  PathFindingCore.Coordinate, PathFindingCore.PathingMap.Direction, PathFindingCore.PathingMap.Terrain
+
   build-depends:    base
   default-language: Haskell2010
