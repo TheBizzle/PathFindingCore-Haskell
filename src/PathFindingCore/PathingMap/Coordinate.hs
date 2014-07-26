@@ -1,4 +1,4 @@
-module PathFindingCore.Coordinate where
+module PathFindingCore.PathingMap.Coordinate where
 
   data Coordinate
     = BadCoord
