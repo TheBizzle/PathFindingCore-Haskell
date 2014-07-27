@@ -2,7 +2,7 @@ module PathFindingCore.PathingMap.Coordinate where
 
   data Coordinate
     = BadCoord
-    | Coord { x :: Int, y :: Int }
+    | Coord { x :: Int, y :: Int } deriving (Eq)
 
   isValid :: Coordinate -> Bool
   isValid BadCoord = False
@@ -12,11 +12,6 @@ module PathFindingCore.PathingMap.Coordinate where
   overlaps BadCoord _        = False
   overlaps _        BadCoord = False
   overlaps a        b        = a == b
-
-  instance Eq Coordinate where
-    BadCoord      == BadCoord      = True
-    (Coord x1 y1) == (Coord x2 y2) = x1 == x2 && y1 == y2
-    _             == _             = False
 
   data PriorityCoordinate
     = PCoord { priority :: Int, coord :: Coordinate }
