@@ -6,5 +6,5 @@ module PathFindingCore.PathingMap.Direction where
     | South
     | West
 
-  toList :: [Direction]
-  toList = [North, East, South, West]
+  directions :: [Direction]
+  directions = [North, East, South, West]
