@@ -2,7 +2,7 @@ module PathFindingCore.PathingMap.Coordinate where
 
   data Coordinate
     = BadCoord
-    | Coord { x :: Int, y :: Int } deriving (Eq)
+    | Coord { x :: Int, y :: Int } deriving (Eq, Show)
 
   isValid :: Coordinate -> Bool
   isValid BadCoord = False

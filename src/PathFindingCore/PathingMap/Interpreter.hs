@@ -44,8 +44,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
 
   findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
   findStartAndGoal arr =
-    let pairs  = zip (indices arr) (elems arr)
-        result = foldr findBest (BadCoord, BadCoord) $ pairs
+    let result = foldr findBest (BadCoord, BadCoord) (assocs arr)
     in case result of
       (BadCoord, _       ) -> error "No start in given grid."
       (_,        BadCoord) -> error "No goal in given grid."
