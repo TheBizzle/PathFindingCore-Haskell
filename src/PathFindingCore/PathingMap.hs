@@ -17,7 +17,7 @@ module PathFindingCore.PathingMap where
   getTerrain _    BadCoord    = error "Cannot get terrain of invalid coordinate"
   getTerrain grid (Coord x y) =
     let ((x1, y1), (x2, y2)) = bounds grid
-        isInBounds           = (x >= x1) && (x < x2) && (y >= y1) && (y < y2)
+        isInBounds           = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
     in if isInBounds then grid ! (x, y) else Invalid
 
   neighborsOf :: PathingGrid -> Coordinate -> [Direction]
