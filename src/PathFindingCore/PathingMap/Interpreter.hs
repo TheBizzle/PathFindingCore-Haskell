@@ -36,11 +36,6 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
         terrains = fmap charToTerrain str
         lastX    = strList |> (last >>> length)
     in listArray ((0, 0), ((length strList) - 1, lastX)) terrains
-    where
-      convertInner :: String -> Array Int Terrain
-      convertInner str =
-        let innerBounds = (0, (length str) - 1)
-        in str |> ((fmap charToTerrain) >>> (listArray innerBounds))
 
   findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
   findStartAndGoal arr =
