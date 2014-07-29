@@ -61,7 +61,7 @@ module PathFindingCore.PathingMap where
 
   instance Show PathingGrid where
     show grid =
-      let maxX     = grid |> (bounds >>> snd >>> snd)
+      let maxX     = grid |> (bounds >>> snd >>> snd >>> (+1))
           str      = grid |> (elems >>> (fmap terrainToChar))
           chunks   = chunksOf maxX str
           nlChunks = fmap (++"\n") chunks
