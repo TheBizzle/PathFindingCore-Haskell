@@ -15,16 +15,15 @@ module PathFindingCore.PathingMap where
 
   getTerrain :: PathingGrid -> Coordinate -> Terrain
   getTerrain _    BadCoord    = error "Cannot get terrain of invalid coordinate"
-  getTerrain grid (Coord x y) =
-    let ((x1, y1), (x2, y2)) = bounds grid
-        isInBounds           = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
-    in if isInBounds then grid ! (x, y) else Invalid
+  getTerrain grid (Coord x y) = if isInBounds then grid ! (x, y) else Invalid
+    where
+      ((x1, y1), (x2, y2)) = bounds grid
+      isInBounds           = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
 
   neighborsOf :: PathingGrid -> Coordinate -> [Direction]
-  neighborsOf grid coordinate =
-    filter f directions
+  neighborsOf grid coordinate = filter canTravelTo directions
     where
-      f = (findNeighborCoord coordinate) >>> (getTerrain grid) >>> isPassable
+      canTravelTo = (findNeighborCoord coordinate) >>> (getTerrain grid) >>> isPassable
 
   step :: PathingGrid -> Coordinate -> Coordinate -> PathingGrid
   step grid (Coord x1 y1) (Coord x2 y2) = grid // [((x1, y1), Query), ((x2, y2), Self)]
@@ -36,8 +35,7 @@ module PathFindingCore.PathingMap where
   markAsGoal _    BadCoord    = error "Cannot mark invalid coordinate as goal"
 
   insertPath :: PathingGrid -> [Coordinate] -> PathingGrid
-  insertPath grid coords =
-    grid // (fmap f coords)
+  insertPath grid coords = grid // (fmap f coords)
     where
       f (Coord x y) = ((x, y), Path)
 
@@ -60,9 +58,9 @@ module PathFindingCore.PathingMap where
       | otherwise    = error (printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord))
 
   instance Show PathingGrid where
-    show grid =
-      let maxX   = grid |> (bounds >>> snd >>> snd >>> (+1))
-          str    = grid |> (elems >>> (fmap terrainToChar))
-          chunks = chunksOf maxX str
-          lines  = fmap (++"\n") chunks
-      in foldr (++) [] lines
+    show grid = foldr (++) [] lines
+      where
+        maxX   = grid |> (bounds >>> snd >>> snd >>> (+1))
+        str    = grid |> (elems >>> (fmap terrainToChar))
+        chunks = chunksOf maxX str
+        lines  = fmap (++"\n") chunks

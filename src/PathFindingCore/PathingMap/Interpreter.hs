@@ -25,17 +25,18 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
   a |> f = f a
 
   fromMapString :: PathingMapString -> PathingMapData
-  fromMapString (PathingMapString str delim) =
-    let grid          = str |> ((splitOn delim) >>> strListToGrid)
-        (start, goal) = findStartAndGoal grid
-    in (PathingMapData start goal grid)
+  fromMapString (PathingMapString str delim) = (PathingMapData start goal grid)
+    where
+      grid          = str |> ((splitOn delim) >>> strListToGrid)
+      (start, goal) = findStartAndGoal grid
 
   strListToGrid :: [String] -> PathingGrid
-  strListToGrid strList =
-    let str      = foldr (++) [] (reverse strList) --Reverse the list to vertically flip the map so it prints out sensically
-        terrains = fmap charToTerrain str
-        lastX    = strList |> (last >>> length)
-    in listArray ((0, 0), ((length strList) - 1, lastX)) terrains
+  strListToGrid strList = listArray ((0, 0), endTuple) terrains
+    where
+      str      = foldr (++) [] (reverse strList) --Reverse the list to vertically flip the map so it prints out sensically
+      terrains = fmap charToTerrain str
+      lastX    = strList |> (last >>> length)
+      endTuple = ((length strList) - 1, lastX)
 
   findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
   findStartAndGoal arr =
