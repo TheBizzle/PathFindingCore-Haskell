@@ -38,6 +38,7 @@ module PathFindingCore.PathingMap where
   insertPath grid coords = grid // (fmap f coords)
     where
       f (Coord x y) = ((x, y), Path)
+      f BadCoord    = error "Invalid breadcrumb path supplied; cannot mark invalid coordinate"
 
   findNeighborCoord :: Coordinate -> Direction -> Coordinate
   findNeighborCoord BadCoord    _   = error "Cannot find neighbor of invalid coordinate"

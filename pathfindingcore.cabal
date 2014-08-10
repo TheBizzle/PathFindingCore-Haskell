@@ -22,3 +22,6 @@ library
     array >= 0.4,
     base  >= 4.6,
     split >= 0.2
+
+  GHC-Options: -Wall
+               -fno-warn-name-shadowing

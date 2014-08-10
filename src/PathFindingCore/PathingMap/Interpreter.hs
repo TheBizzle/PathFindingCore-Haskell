@@ -47,5 +47,5 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
       startAndGoal         -> startAndGoal
     where
       findBest ((x, y), Self) (_, g) = (Coord x y, g)
-      findBest ((x, y), Goal) (s, g) = (s,         Coord x y)
+      findBest ((x, y), Goal) (s, _) = (s,         Coord x y)
       findBest _              (s, g) = (s,         g)
