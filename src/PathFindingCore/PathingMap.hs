@@ -11,6 +11,11 @@ module PathFindingCore.PathingMap where
   import PathFindingCore.PathingMap.Interpreter
   import PathFindingCore.PathingMap.Terrain
 
+  data PrintablePathingGrid
+    = PPG {
+        pathingGrid :: PathingGrid
+      }
+
   a |> f = f a
 
   getTerrain :: PathingGrid -> Coordinate -> Terrain
@@ -58,8 +63,8 @@ module PathFindingCore.PathingMap where
       | x2 == x1 - 1 = West
       | otherwise    = error (printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord))
 
-  instance Show PathingGrid where
-    show grid = foldr (++) [] lines
+  instance Show PrintablePathingGrid where
+    show (PPG grid) = foldr (++) [] lines
       where
         maxX   = grid |> (bounds >>> snd >>> snd >>> (+1))
         str    = grid |> (elems >>> (fmap terrainToChar))
