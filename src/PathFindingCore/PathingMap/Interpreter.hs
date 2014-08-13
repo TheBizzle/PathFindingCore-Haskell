@@ -1,4 +1,4 @@
-module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, PathingMapString, PathingMapData) where
+module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, PathingMapString(..), PathingMapData(..)) where
 
   import Control.Arrow
   import Data.Array.IArray
