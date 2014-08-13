@@ -35,8 +35,10 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
     where
       str      = foldr (++) [] (reverse strList) --Reverse the list to vertically flip the map so it prints out sensically
       terrains = fmap charToTerrain str
-      lastX    = strList |> (last >>> length)
-      endTuple = ((length strList) - 1, lastX)
+      length'  = length >>> (+(-1))
+      xLength  = strList |> (last >>> length')
+      yLength  = strList |> (length')
+      endTuple = (xLength, yLength)
 
   findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
   findStartAndGoal arr =
