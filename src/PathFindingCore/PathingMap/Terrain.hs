@@ -30,7 +30,7 @@ module PathFindingCore.PathingMap.Terrain where
 
   charToTerrain :: Char -> Terrain
   charToTerrain 'a' = Ant
-  charToTerrain '_' = Empty
+  charToTerrain ' ' = Empty
   charToTerrain 'f' = Food
   charToTerrain 'G' = Goal
   charToTerrain 'O' = Mound
@@ -43,7 +43,7 @@ module PathFindingCore.PathingMap.Terrain where
 
   terrainToChar :: Terrain -> Char
   terrainToChar Ant     = 'a'
-  terrainToChar Empty   = '_'
+  terrainToChar Empty   = ' '
   terrainToChar Food    = 'f'
   terrainToChar Goal    = 'G'
   terrainToChar Mound   = 'O'
