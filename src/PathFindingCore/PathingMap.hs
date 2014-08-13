@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
-module PathFindingCore.PathingMap where
+module PathFindingCore.PathingMap(findDirection, findNeighborCoord, insertPath, markAsGoal, neighborsOf, PrintablePathingGrid(..), step) where
 
   import Control.Arrow
   import Data.Array.IArray
