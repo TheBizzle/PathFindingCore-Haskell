@@ -1,5 +1,7 @@
 module PathFindingCore.PathingMap.Terrain where
 
+  import Control.Arrow
+
   data Terrain
     = Ant
     | Empty
@@ -11,7 +13,7 @@ module PathFindingCore.PathingMap.Terrain where
     | Query
     | Self
     | Wall
-    | Water
+    | Water deriving (Eq)
 
   isPassable :: Terrain -> Bool
   isPassable Ant     = True
@@ -51,3 +53,8 @@ module PathFindingCore.PathingMap.Terrain where
   terrainToChar Wall    = 'D'
   terrainToChar Water   = '%'
   terrainToChar Invalid = error "`Invalid` is not representable terrain"
+
+  instance Show Terrain where
+    show = terrainToChar >>> singleton
+      where
+        singleton x = [x]

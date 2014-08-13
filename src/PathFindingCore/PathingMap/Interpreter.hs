@@ -13,14 +13,14 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
     = PathingMapString {
         str   :: String,
         delim :: String
-      }
+      } deriving (Eq)
 
   data PathingMapData
     = PathingMapData {
         start :: Coordinate,
         goal  :: Coordinate,
         grid  :: PathingGrid
-      }
+      } deriving (Eq, Show)
 
   a |> f = f a
 
