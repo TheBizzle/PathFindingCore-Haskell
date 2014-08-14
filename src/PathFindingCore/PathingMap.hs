@@ -69,7 +69,15 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
         maxX   = grid |> (bounds >>> snd >>> fst >>> (+1))
         str    = grid |> (elems >>> (fmap terrainToChar))
         chunks = chunksOf maxX str
-        lines  = rotateCounterClockwise chunks
+        lines  = chunks |> (rotateCounterClockwise >>> (makeLinesPretty maxX))
+
+  makeLinesPretty :: Int -> [String] -> [String]
+  makeLinesPretty maxX lines = concat [[topB], linesB, [botB]]
+    where
+      linesB = fmap (\x -> "|" ++ x ++ "|\n") lines
+      border = replicate maxX '-'
+      topB   = concat ["+", border, "+", "\n"]
+      botB   = concat ["+", border, "+"]
 
   rotateCounterClockwise :: [[t]] -> [[t]]
   rotateCounterClockwise ts = reverse $ helper ts []
