@@ -66,7 +66,17 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
   instance Show PrintablePathingGrid where
     show (PPG grid) = foldr (++) [] lines
       where
-        maxX   = grid |> (bounds >>> snd >>> snd >>> (+1))
+        maxX   = grid |> (bounds >>> snd >>> fst >>> (+1))
         str    = grid |> (elems >>> (fmap terrainToChar))
         chunks = chunksOf maxX str
-        lines  = fmap (++"\n") chunks
+        lines  = rotateCounterClockwise chunks
+
+  rotateCounterClockwise :: [[t]] -> [[t]]
+  rotateCounterClockwise ts = reverse $ helper ts []
+    where
+      helper xs acc | isUseless xs = acc
+      helper xs acc                = xs |> ((fmap unsnap) >>> unzip >>> (recurse acc))
+      isUseless                    = concat >>> null
+      unsnap []                    = error "Impossible condition achieved"
+      unsnap xs                    = (last xs, init xs)
+      recurse acc (row, remainder) = helper remainder (row : acc)
