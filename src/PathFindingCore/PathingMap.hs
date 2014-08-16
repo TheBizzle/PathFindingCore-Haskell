@@ -4,6 +4,7 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
   import Control.Arrow
   import Data.Array.IArray
   import Data.List.Split
+  import Data.Maybe
   import Text.Printf
 
   import PathFindingCore.PathingMap.Coordinate
@@ -18,8 +19,8 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
 
   a |> f = f a
 
-  getTerrain :: PathingGrid -> Coordinate -> Terrain
-  getTerrain grid (Coord x y) = if isInBounds then grid ! (x, y) else Invalid
+  getTerrain :: PathingGrid -> Coordinate -> Maybe Terrain
+  getTerrain grid (Coord x y) = if isInBounds then (Just $ grid ! (x, y)) else Nothing
     where
       ((x1, y1), (x2, y2)) = bounds grid
       isInBounds           = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
@@ -27,7 +28,7 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
   neighborsOf :: PathingGrid -> Coordinate -> [Direction]
   neighborsOf grid coordinate = filter canTravelTo directions
     where
-      canTravelTo = (findNeighborCoord coordinate) >>> (getTerrain grid) >>> isPassable
+      canTravelTo = (findNeighborCoord coordinate) >>> (getTerrain grid) >>> (fmap isPassable) >>> (fromMaybe False)
 
   step :: PathingGrid -> Coordinate -> Coordinate -> PathingGrid
   step grid (Coord x1 y1) (Coord x2 y2) = grid // [((x1, y1), Query), ((x2, y2), Self)]

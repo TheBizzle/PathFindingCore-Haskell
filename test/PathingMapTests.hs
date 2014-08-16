@@ -15,9 +15,9 @@ import PathFindingCore.PathingMap.Terrain
 import PathFindingCore.PathingMap
 
 tests = testGroup "Test interpreter" [
-   testInterpreter "getTerrain 1"  (\x -> getTerrain  x (Coord 9001 9001)) Invalid
- , testInterpreter "getTerrain 2"  (\x -> getTerrain  x (Coord 1 1))       Wall
- , testInterpreter "getTerrain 3"  (\x -> getTerrain  x (Coord 3 0))       Empty
+   testInterpreter "getTerrain 1"  (\x -> getTerrain  x (Coord 9001 9001)) Nothing
+ , testInterpreter "getTerrain 2"  (\x -> getTerrain  x (Coord 1 1))       $ Just Wall
+ , testInterpreter "getTerrain 3"  (\x -> getTerrain  x (Coord 3 0))       $ Just Empty
  , testInterpreter "neighborsOf 1" (\x -> neighborsOf x (Coord 9001 9001)) []
  , testInterpreter "neighborsOf 2" (\x -> neighborsOf x (Coord 2 0))       [North, East]
  , testInterpreter "neighborsOf 3" (\x -> neighborsOf x (Coord 3 0))       [West]

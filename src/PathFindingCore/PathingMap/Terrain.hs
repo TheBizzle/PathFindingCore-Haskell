@@ -8,7 +8,6 @@ module PathFindingCore.PathingMap.Terrain where
     | Food
     | Goal
     | Mound
-    | Invalid
     | Path
     | Query
     | Self
@@ -21,7 +20,6 @@ module PathFindingCore.PathingMap.Terrain where
   isPassable Food    = True
   isPassable Goal    = True
   isPassable Mound   = True
-  isPassable Invalid = False
   isPassable Path    = False
   isPassable Query   = False
   isPassable Self    = False
@@ -39,7 +37,6 @@ module PathFindingCore.PathingMap.Terrain where
   charToTerrain '*' = Self
   charToTerrain 'D' = Wall
   charToTerrain '%' = Water
-  charToTerrain _   = Invalid
 
   terrainToChar :: Terrain -> Char
   terrainToChar Ant     = 'a'
@@ -52,7 +49,6 @@ module PathFindingCore.PathingMap.Terrain where
   terrainToChar Self    = '*'
   terrainToChar Wall    = 'D'
   terrainToChar Water   = '%'
-  terrainToChar Invalid = error "`Invalid` is not representable terrain"
 
   instance Show Terrain where
     show = terrainToChar >>> singleton
