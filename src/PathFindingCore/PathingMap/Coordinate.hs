@@ -1,7 +1,9 @@
 module PathFindingCore.PathingMap.Coordinate where
 
+  import Data.Ix
+
   data Coordinate
-    = Coord { x :: Int, y :: Int } deriving (Eq, Show)
+    = Coord { x :: Int, y :: Int } deriving (Eq, Ix, Ord, Show)
 
   data PriorityCoordinate
     = PCoord { priority :: Int, coord :: Coordinate } deriving (Eq, Show)
