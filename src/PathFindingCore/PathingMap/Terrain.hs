@@ -37,6 +37,7 @@ module PathFindingCore.PathingMap.Terrain where
   charToTerrain '*' = Self
   charToTerrain 'D' = Wall
   charToTerrain '%' = Water
+  charToTerrain x   = error $ "Cannot convert '" ++ (show x) ++ "' to a terrain"
 
   terrainToChar :: Terrain -> Char
   terrainToChar Ant     = 'a'
