@@ -33,9 +33,9 @@ tests = testGroup "Test interpreter" [
    m5x5p2 = " DGD | DDD |%%%% |DD %%|*D  %"
 
 testInterpreter :: String -> String -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> API.Test
-testInterpreter desc strGrid (x1, y1) (x2, y2) upperBound arr = testCase desc assertion
+testInterpreter desc strGrid (x1, y1) (x2, y2) (ux, uy) arr = testCase desc assertion
   where
     pmStr     = PathingMapString strGrid "|"
-    grid      = listArray ((0, 0), upperBound) arr
+    grid      = listArray (Coord 0 0, Coord ux uy) arr
     pmData    = PathingMapData (Coord x1 y1) (Coord x2 y2) grid
     assertion = (fromMapString pmStr) @?= pmData

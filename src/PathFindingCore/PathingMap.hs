@@ -20,10 +20,10 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
   a |> f = f a
 
   getTerrain :: PathingGrid -> Coordinate -> Maybe Terrain
-  getTerrain grid (Coord x y) = if isInBounds then (Just $ grid ! (x, y)) else Nothing
+  getTerrain grid coord@(Coord x y) = if isInBounds then (Just $ grid ! coord) else Nothing
     where
-      ((x1, y1), (x2, y2)) = bounds grid
-      isInBounds           = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
+      (Coord x1 y1, Coord x2 y2) = bounds grid
+      isInBounds                 = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
 
   neighborsOf :: PathingGrid -> Coordinate -> [Direction]
   neighborsOf grid coordinate = filter canTravelTo directions
@@ -31,15 +31,15 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
       canTravelTo = (findNeighborCoord coordinate) >>> (getTerrain grid) >>> (fmap isPassable) >>> (fromMaybe False)
 
   step :: PathingGrid -> Coordinate -> Coordinate -> PathingGrid
-  step grid (Coord x1 y1) (Coord x2 y2) = grid // [((x1, y1), Query), ((x2, y2), Self)]
+  step grid prev new = grid // [(prev, Query), (new, Self)]
 
   markAsGoal :: PathingGrid -> Coordinate -> PathingGrid
-  markAsGoal grid (Coord x y) = grid // [((x, y), Goal)]
+  markAsGoal grid coord = grid // [(coord, Goal)]
 
   insertPath :: PathingGrid -> [Coordinate] -> PathingGrid
   insertPath grid coords = grid // (fmap f coords)
     where
-      f (Coord x y) = ((x, y), Path)
+      f coord = (coord, Path)
 
   findNeighborCoord :: Coordinate -> Direction -> Coordinate
   findNeighborCoord (Coord x y) dir = case dir of
@@ -59,7 +59,7 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
   instance Show PrintablePathingGrid where
     show (PPG grid) = foldr (++) [] lines
       where
-        maxX   = grid |> (bounds >>> snd >>> fst >>> (+1))
+        maxX   = grid |> (bounds >>> snd >>> x >>> (+1))
         str    = grid |> (elems >>> (fmap terrainToChar))
         chunks = chunksOf maxX str
         lines  = chunks |> (rotateCounterClockwise >>> (makeLinesPretty maxX))

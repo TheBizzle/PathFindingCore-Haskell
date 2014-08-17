@@ -7,7 +7,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
   import PathFindingCore.PathingMap.Coordinate
   import PathFindingCore.PathingMap.Terrain
 
-  type PathingGrid = Array (Int, Int) Terrain
+  type PathingGrid = Array Coordinate Terrain
 
   data PathingMapString
     = PathingMapString {
@@ -35,14 +35,14 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
   -- it such that it follows normal Cartesian coordinate rules (strs[a][b] => a: 0 = leftmost character, b: 0 = bottom
   -- row) --JAB (8/13/14)
   strListToGrid :: [String] -> PathingGrid
-  strListToGrid strList = listArray ((0, 0), endTuple) terrains
+  strListToGrid strList = listArray (Coord 0 0, endCoord) terrains
     where
       str      = foldr (++) [] (rotateClockwise strList)
       terrains = fmap charToTerrain str
       length'  = length >>> (+(-1))
       xLength  = strList |> (last >>> length')
       yLength  = strList |> (length')
-      endTuple = (xLength, yLength)
+      endCoord = Coord xLength yLength
 
   findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
   findStartAndGoal arr =
@@ -52,9 +52,9 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
       (_,          Nothing)   -> error "No goal in given grid."
       (Just start, Just goal) -> (start, goal)
     where
-      findBest ((x, y), Self) (_, g) = (Just $ Coord x y, g)
-      findBest ((x, y), Goal) (s, _) = (s,                Just $ Coord x y)
-      findBest _              (s, g) = (s,                g)
+      findBest (coord, Self) (_, g) = (Just coord, g)
+      findBest (coord, Goal) (s, _) = (s,          Just coord)
+      findBest _             (s, g) = (s,          g)
 
   rotateClockwise :: [[t]] -> [[t]]
   rotateClockwise ts = reverse (helper ts [])
