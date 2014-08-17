@@ -19,25 +19,25 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
 
   a |> f = f a
 
-  getTerrain :: PathingGrid -> Coordinate -> Maybe Terrain
-  getTerrain grid coord@(Coord x y) = if isInBounds then (Just $ grid ! coord) else Nothing
+  getTerrain :: Coordinate -> PathingGrid -> Maybe Terrain
+  getTerrain coord@(Coord x y) grid = if isInBounds then (Just $ grid ! coord) else Nothing
     where
       (Coord x1 y1, Coord x2 y2) = bounds grid
       isInBounds                 = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
 
-  neighborsOf :: PathingGrid -> Coordinate -> [Direction]
-  neighborsOf grid coordinate = filter canTravelTo directions
+  neighborsOf :: Coordinate -> PathingGrid -> [Direction]
+  neighborsOf coordinate grid = filter canTravelTo directions
     where
-      canTravelTo = (findNeighborCoord coordinate) >>> (getTerrain grid) >>> (fmap isPassable) >>> (fromMaybe False)
+      canTravelTo = (findNeighborCoord coordinate) >>> (\x -> getTerrain x grid) >>> (fmap isPassable) >>> (fromMaybe False)
 
-  step :: PathingGrid -> Coordinate -> Coordinate -> PathingGrid
-  step grid prev new = grid // [(prev, Query), (new, Self)]
+  step :: Coordinate -> Coordinate -> PathingGrid -> PathingGrid
+  step prev new grid = grid // [(prev, Query), (new, Self)]
 
-  markAsGoal :: PathingGrid -> Coordinate -> PathingGrid
-  markAsGoal grid coord = grid // [(coord, Goal)]
+  markAsGoal :: Coordinate -> PathingGrid -> PathingGrid
+  markAsGoal coord grid = grid // [(coord, Goal)]
 
-  insertPath :: PathingGrid -> [Coordinate] -> PathingGrid
-  insertPath grid coords = grid // (fmap f coords)
+  insertPath :: [Coordinate] -> PathingGrid -> PathingGrid
+  insertPath coords grid = grid // (fmap f coords)
     where
       f coord = (coord, Path)
 
