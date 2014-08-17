@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
-module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, insertPath, markAsGoal, neighborsOf, PrintablePathingGrid(..), step) where
+module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsGoal, neighborsOf, PrintablePathingGrid(..), step) where
 
   import Control.Arrow
   import Data.Array.IArray
@@ -25,10 +25,10 @@ module PathFindingCore.PathingMap(findDirection, findNeighborCoord, getTerrain, 
       (Coord x1 y1, Coord x2 y2) = bounds grid
       isInBounds                 = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
 
-  neighborsOf :: Coordinate -> PathingGrid -> [Direction]
-  neighborsOf coordinate grid = filter canTravelTo directions
+  neighborsOf :: Coordinate -> PathingGrid -> [Coordinate]
+  neighborsOf coordinate grid = directions |> ((fmap $ findNeighborCoord coordinate) >>> (filter canTravelTo))
     where
-      canTravelTo = (findNeighborCoord coordinate) >>> (\x -> getTerrain x grid) >>> (fmap isPassable) >>> (fromMaybe False)
+      canTravelTo = (\x -> getTerrain x grid) >>> (fmap isPassable) >>> (fromMaybe False)
 
   step :: Coordinate -> Coordinate -> PathingGrid -> PathingGrid
   step prev new grid = grid // [(prev, Query), (new, Self)]
