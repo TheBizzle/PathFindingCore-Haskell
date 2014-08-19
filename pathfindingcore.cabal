@@ -1,5 +1,5 @@
 Name:                pathfindingcore
-Version:             0.1.6
+Version:             0.1.7
 Cabal-version:       >=1.16.0
 License:             BSD3
 License-File:        LICENSE.txt
@@ -17,7 +17,7 @@ source-repository head
 
 library
   hs-source-dirs:   src
-  exposed-modules:  PathFindingCore.PathingMap, PathFindingCore.PathingStatus, PathFindingCore.StepData, PathFindingCore.PathingMap.Coordinate, PathFindingCore.PathingMap.Direction, PathFindingCore.PathingMap.Terrain, PathFindingCore.PathingMap.Interpreter, PathFindingTest.TestSet
+  exposed-modules:  PathFindingCore.PathingMap, PathFindingCore.Status, PathFindingCore.PathingMap.Coordinate, PathFindingCore.PathingMap.Direction, PathFindingCore.PathingMap.Terrain, PathFindingCore.PathingMap.Interpreter, PathFindingTest.TestSet
   default-language: Haskell2010
   build-depends:
     array >= 0.4,
@@ -36,6 +36,6 @@ test-suite tests
     array                      >= 0.4,
     base                       >= 4.6 && < 5,
     HUnit                      >= 1.2,
-    pathfindingcore            >= 0.1.6,
+    pathfindingcore            >= 0.1.7,
     test-framework             >= 0.8,
     test-framework-hunit       >= 0.3
