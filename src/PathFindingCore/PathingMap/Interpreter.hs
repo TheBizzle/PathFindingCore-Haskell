@@ -37,7 +37,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
   strListToGrid :: [String] -> PathingGrid
   strListToGrid strList = listArray (Coord 0 0, endCoord) terrains
     where
-      str      = foldr (++) [] (rotateClockwise strList)
+      str      = foldr (++) [] $ rotateClockwise strList
       terrains = fmap charToTerrain str
       length'  = length >>> (+(-1))
       xLength  = strList |> (last >>> length')
@@ -64,4 +64,4 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
       isUseless                    = concat >>> null
       unsnap (x : xs)              = (x, xs)
       unsnap []                    = error "Impossible condition achieved"
-      recurse acc (row, remainder) = helper remainder ((reverse row) : acc)
+      recurse acc (row, remainder) = helper remainder $ (reverse row) : acc

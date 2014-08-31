@@ -20,7 +20,7 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
   a |> f = f a
 
   getTerrain :: Coordinate -> PathingGrid -> Maybe Terrain
-  getTerrain coord@(Coord x y) grid = if isInBounds then (Just $ grid ! coord) else Nothing
+  getTerrain coord@(Coord x y) grid = if isInBounds then Just $ grid ! coord else Nothing
     where
       (Coord x1 y1, Coord x2 y2) = bounds grid
       isInBounds                 = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
@@ -28,7 +28,7 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
   neighborsOf :: Coordinate -> PathingGrid -> [Coordinate]
   neighborsOf coordinate grid = directions |> ((fmap $ findNeighborCoord coordinate) >>> (filter canTravelTo))
     where
-      canTravelTo = (\x -> getTerrain x grid) >>> (fmap isPassable) >>> (fromMaybe False)
+      canTravelTo = (flip getTerrain) grid >>> (fmap isPassable) >>> (fromMaybe False)
 
   step :: Coordinate -> Coordinate -> PathingGrid -> PathingGrid
   step prev new grid = grid // [(prev, Query), (new, Self)]
@@ -54,7 +54,7 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
       | y2 == y1 - 1 = South
       | x2 == x1 + 1 = East
       | x2 == x1 - 1 = West
-      | otherwise    = error (printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord))
+      | otherwise    = error $ printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord)
 
   instance Show PrintablePathingGrid where
     show (PPG grid) = foldr (++) [] lines
@@ -80,4 +80,4 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
       isUseless                    = concat >>> null
       unsnap []                    = error "Impossible condition achieved"
       unsnap xs                    = (last xs, init xs)
-      recurse acc (row, remainder) = helper remainder (row : acc)
+      recurse acc (row, remainder) = helper remainder $ row : acc
