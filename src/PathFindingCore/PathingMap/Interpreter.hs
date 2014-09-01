@@ -39,7 +39,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
     where
       str      = foldr (++) [] $ rotateClockwise strList
       terrains = fmap charToTerrain str
-      length'  = length >>> (+(-1))
+      length'  = length >>> (subtract 1)
       xLength  = strList |> (last >>> length')
       yLength  = strList |> (length')
       endCoord = Coord xLength yLength
