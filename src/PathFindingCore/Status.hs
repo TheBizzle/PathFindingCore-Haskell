@@ -4,3 +4,7 @@ module PathFindingCore.Status where
     = Failure
     | Success
     | Continue
+
+  data RunResult
+    = FailedRun
+    | SuccessfulRun
