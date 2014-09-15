@@ -1,4 +1,4 @@
-module PathFindingTest.TestSet(tests) where
+module PathFindingTest.TestSet(PathingMapTest, tests) where
 
   data PathingMapTest = PathingMapTest { dist  :: Maybe Int, delim :: String, pMap  :: String }
 
