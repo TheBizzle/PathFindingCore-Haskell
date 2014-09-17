@@ -45,16 +45,14 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
       endCoord = Coord xLength yLength
 
   findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
-  findStartAndGoal arr =
-    let result = foldr findBest (Nothing, Nothing) (assocs arr)
-    in case result of
-      (Nothing,    _      )   -> error "No start in given grid."
-      (_,          Nothing)   -> error "No goal in given grid."
-      (Just start, Just goal) -> (start, goal)
+  findStartAndGoal arr = analyzeResult $ foldr findBest (Nothing, Nothing) (assocs arr)
     where
       findBest (coord, Self) (_, g) = (Just coord, g)
       findBest (coord, Goal) (s, _) = (s,          Just coord)
       findBest _             (s, g) = (s,          g)
+      analyzeResult (Nothing,    _      )   = error "No start in given grid."
+      analyzeResult (_,          Nothing)   = error "No goal in given grid."
+      analyzeResult (Just start, Just goal) = (start, goal)
 
   rotateClockwise :: [[t]] -> [[t]]
   rotateClockwise ts = reverse (helper ts [])
