@@ -2,7 +2,7 @@ module PathFindingTest.TestSet(PathingMapTest(..), tests) where
 
   import PathFindingCore.PathingMap.Interpreter(PathingMapString(..))
 
-  data PathingMapTest = PathingMapTest { dist  :: Maybe Int, pathingMapStr :: PathingMapString }
+  data PathingMapTest = PathingMapTest { dist :: Maybe Double, pathingMapStr :: PathingMapString }
 
   tests :: [PathingMapTest]
   tests = [testMap1,  testMap2,  testMap3,  testMap4,  testMap5,  testMap6,  testMap7,  testMap8,  testMap9,  testMap10
