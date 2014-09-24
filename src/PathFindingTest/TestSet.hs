@@ -28,8 +28,8 @@ module PathFindingTest.TestSet(PathingMapTest(..), tests) where
 
   testMap4 :: PathingMapTest
   testMap4 = PathingMapTest (Just 6) $ pms "|" " %  *|\
-                                                 \OG% %|\
-                                                 \%    |"
+                                               \OG% %|\
+                                               \%    |"
 
   testMap5 :: PathingMapTest
   testMap5 = PathingMapTest (Just 39) $ pms "|" "               |\
