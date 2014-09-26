@@ -62,7 +62,7 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
         maxX   = grid |> (bounds >>> snd >>> x >>> (+1))
         str    = grid |> (elems >>> (fmap terrainToChar))
         chunks = chunksOf maxX str
-        lines  = chunks |> (rotateCounterClockwise >>> (makeLinesPretty maxX))
+        lines  = chunks |> (transpose >>> (makeLinesPretty maxX))
 
   makeLinesPretty :: Int -> [String] -> [String]
   makeLinesPretty maxX lines = concat [[topB], linesB, [botB]]
@@ -72,12 +72,6 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
       topB   = concat ["+", border, "+", "\n"]
       botB   = concat ["+", border, "+"]
 
-  rotateCounterClockwise :: [[t]] -> [[t]]
-  rotateCounterClockwise ts = reverse $ helper ts []
-    where
-      helper xs acc | isUseless xs = acc
-      helper xs acc                = xs |> ((fmap unsnap) >>> unzip >>> (recurse acc))
-      isUseless                    = concat >>> null
-      unsnap []                    = error "Impossible condition achieved"
-      unsnap xs                    = (last xs, init xs)
-      recurse acc (row, remainder) = helper remainder $ row : acc
+  transpose :: [[a]] -> [[a]]
+  transpose ([] : _) = []
+  transpose xss      = (fmap head xss) : (transpose $ fmap tail xss)
