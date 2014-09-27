@@ -306,11 +306,11 @@ module PathFindingTest.TestSet(PathingMapTest(..), tests) where
                                                \                                              "
 
   testMap37 :: PathingMapTest
-  testMap37 = PathingMapTest Nothing $ pms "|" "_______________|\
-                                               \______DDD______|\
-                                               \______DGD______|\
-                                               \______DDD______|\
-                                               \*______________"
+  testMap37 = PathingMapTest Nothing $ pms "|" "               |\
+                                               \      DDD      |\
+                                               \      DGD      |\
+                                               \      DDD      |\
+                                               \*              "
 
   testMap38 :: PathingMapTest
   testMap38 = PathingMapTest Nothing $ pms "|" "                                              |\
