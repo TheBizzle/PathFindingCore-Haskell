@@ -2,6 +2,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
 
   import Control.Arrow
   import Data.Array.IArray
+  import Data.List
   import Data.List.Split
 
   import PathFindingCore.PathingMap.Coordinate
@@ -28,8 +29,9 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
   fromMapString (PathingMapString ""  _)     = error "Cannot build map from empty string"
   fromMapString (PathingMapString str delim) = PathingMapData start goal grid
     where
-      grid          = str |> ((splitOn delim) >>> strListToGrid)
+      grid          = str |> ((dropDelim delim) >>> (splitOn delim) >>> strListToGrid)
       (start, goal) = findStartAndGoal grid
+      dropDelim d s = if (isSuffixOf d s) then s |> (reverse >>> (drop $ length d) >>> reverse) else s
 
   -- The need for `rotateClockwise` likely seems bizarre, at first glance.  To frame the reason for its necessity:
   -- We start with rows of strings (strs[a][b] => a: 0 = top row, b: 0 = leftmost character) and we need to transform
