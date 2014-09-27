@@ -3,8 +3,10 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
 
   import Control.Arrow
   import Data.Array.IArray
+  import Data.List
   import Data.List.Split
   import Data.Maybe
+  import Data.Ord
   import Text.Printf
 
   import PathFindingCore.PathingMap.Coordinate
@@ -60,9 +62,9 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
     show (PPG grid) = foldr (++) [] lines
       where
         maxX   = grid |> (bounds >>> snd >>> x >>> (+1))
-        str    = grid |> (elems >>> (fmap terrainToChar))
+        str    = grid |> (assocs >>> (sortBy sillySort) >>> (fmap $ snd >>> terrainToChar))
         chunks = chunksOf maxX str
-        lines  = chunks |> (transpose >>> (makeLinesPretty maxX))
+        lines  = chunks |> (reverse >>> (makeLinesPretty maxX))
 
   makeLinesPretty :: Int -> [String] -> [String]
   makeLinesPretty maxX lines = concat [[topB], linesB, [botB]]
@@ -72,6 +74,8 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
       topB   = concat ["+", border, "+", "\n"]
       botB   = concat ["+", border, "+"]
 
-  transpose :: [[a]] -> [[a]]
-  transpose ([] : _) = []
-  transpose xss      = (fmap head xss) : (transpose $ fmap tail xss)
+  sillySort :: (Coordinate, Terrain) -> (Coordinate, Terrain) -> Ordering
+  sillySort (Coord x1 y1, _) (Coord x2 y2, _) =
+    if y1 < y2 then LT else if y1 > y2 then GT
+       else if x1 < x2 then LT else if x1 > x2 then GT
+         else EQ
