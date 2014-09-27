@@ -25,6 +25,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
   a |> f = f a
 
   fromMapString :: PathingMapString -> PathingMapData
+  fromMapString (PathingMapString ""  _)     = error "Cannot build map from empty string"
   fromMapString (PathingMapString str delim) = PathingMapData start goal grid
     where
       grid          = str |> ((splitOn delim) >>> strListToGrid)
