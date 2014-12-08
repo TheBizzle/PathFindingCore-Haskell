@@ -63,8 +63,7 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
       where
         maxX   = grid |> (bounds >>> snd >>> x >>> (+1))
         str    = grid |> (assocs >>> (sortBy sillySort) >>> (fmap $ snd >>> terrainToChar))
-        chunks = chunksOf maxX str
-        lines  = chunks |> (reverse >>> (makeLinesPretty maxX))
+        lines  = str  |> ((chunksOf maxX) >>> reverse >>> (makeLinesPretty maxX))
 
   makeLinesPretty :: Int -> [String] -> [String]
   makeLinesPretty maxX lines = concat [[topB], linesB, [botB]]
