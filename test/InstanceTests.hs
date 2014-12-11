@@ -1,15 +1,13 @@
 module InstanceTests where
 
-import Test.Framework.Providers.API as API
-import Test.Framework.Providers.HUnit
-import Test.HUnit
+import Test.Framework.Providers.API(Test, testGroup)
+import Test.Framework.Providers.HUnit(testCase)
+import Test.HUnit((@?=))
 
-import Control.Arrow
+import Control.Arrow((>>>))
 
-import Data.Array.IArray
-
-import PathFindingCore.PathingMap
-import PathFindingCore.PathingMap.Interpreter
+import PathFindingCore.PathingMap(PrintablePathingGrid(PPG))
+import PathFindingCore.PathingMap.Interpreter(fromMapString, grid, PathingMapString(PathingMapString))
 
 a |> f = f a
 
@@ -48,7 +46,7 @@ tests = testGroup "Test instances" [
                 \|D DDDD|\n\
                 \+------+"
 
-testPPGInstance :: String -> String -> String -> API.Test
+testPPGInstance :: String -> String -> String -> Test
 testPPGInstance desc strGrid expected = testCase desc assertion
   where
     actual    = strGrid |> ((flip PathingMapString "|") >>> fromMapString >>> grid >>> PPG >>> show)

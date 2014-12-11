@@ -1,12 +1,12 @@
 module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, PathingMapString(..), PathingMapData(..)) where
 
-import Control.Arrow
-import Data.Array.IArray
-import Data.List
-import Data.List.Split
+import Control.Arrow((>>>))
+import Data.Array.IArray(Array, assocs, listArray)
+import Data.List(isSuffixOf)
+import Data.List.Split(splitOn)
 
-import PathFindingCore.PathingMap.Coordinate
-import PathFindingCore.PathingMap.Terrain
+import PathFindingCore.PathingMap.Coordinate(Coordinate(Coord))
+import PathFindingCore.PathingMap.Terrain(charToTerrain, Terrain(Goal, Self))
 
 type PathingGrid = Array Coordinate Terrain
 

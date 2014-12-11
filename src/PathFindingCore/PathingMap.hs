@@ -1,18 +1,17 @@
 {-# LANGUAGE FlexibleInstances #-}
 module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsGoal, neighborsOf, PrintablePathingGrid(..), step) where
 
-import Control.Arrow
-import Data.Array.IArray
-import Data.List
-import Data.List.Split
-import Data.Maybe
-import Data.Ord
-import Text.Printf
+import Control.Arrow((>>>))
+import Data.Array.IArray((!), (//), assocs, bounds)
+import Data.List(sortBy)
+import Data.List.Split(chunksOf)
+import Data.Maybe(fromMaybe)
+import Text.Printf(printf)
 
-import PathFindingCore.PathingMap.Coordinate
-import PathFindingCore.PathingMap.Direction
-import PathFindingCore.PathingMap.Interpreter
-import PathFindingCore.PathingMap.Terrain
+import PathFindingCore.PathingMap.Coordinate(Coordinate(..))
+import PathFindingCore.PathingMap.Direction(Direction(East, North, South, West), directions)
+import PathFindingCore.PathingMap.Interpreter(PathingGrid)
+import PathFindingCore.PathingMap.Terrain(isPassable, Terrain(Goal, Path, Query, Self), terrainToChar)
 
 data PrintablePathingGrid
   = PPG {

@@ -1,16 +1,14 @@
 module InterpreterTests where
 
-import Test.Framework.Providers.API as API
-import Test.Framework.Providers.HUnit
-import Test.HUnit
+import Test.Framework.Providers.API(Test, testGroup)
+import Test.Framework.Providers.HUnit(testCase)
+import Test.HUnit((@?=))
 
-import Control.Arrow
+import Data.Array.IArray(listArray)
 
-import Data.Array.IArray
-
-import PathFindingCore.PathingMap.Coordinate
-import PathFindingCore.PathingMap.Interpreter
-import PathFindingCore.PathingMap.Terrain
+import PathFindingCore.PathingMap.Coordinate(Coordinate(Coord))
+import PathFindingCore.PathingMap.Interpreter(fromMapString, PathingMapData(PathingMapData), PathingMapString(PathingMapString))
+import PathFindingCore.PathingMap.Terrain(Terrain(Empty, Goal, Mound, Self, Wall, Water))
 
 tests = testGroup "Test interpreter" [
    testInterpreter "Simple grid"          "*G"        (0, 0) (1, 0) (1, 0) [Self,  Goal]
@@ -36,7 +34,7 @@ tests = testGroup "Test interpreter" [
              \OG% %|\
              \%    |"
 
-testInterpreter :: String -> String -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> API.Test
+testInterpreter :: String -> String -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> Test
 testInterpreter desc strGrid (x1, y1) (x2, y2) (ux, uy) arr = testCase desc assertion
   where
     pmStr     = PathingMapString strGrid "|"

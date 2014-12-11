@@ -1,7 +1,7 @@
 module PathFindingCore.PathingMap.Terrain where
 
 import Control.Applicative(pure)
-import Control.Arrow
+import Control.Arrow((>>>))
 
 data Terrain
   = Ant

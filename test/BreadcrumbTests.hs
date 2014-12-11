@@ -1,14 +1,10 @@
 module BreadcrumbTests where
 
-import Test.Framework.Providers.API as API
-import Test.Framework.Providers.HUnit
-import Test.HUnit
+import Test.Framework.Providers.API(Test, testGroup)
+import Test.Framework.Providers.HUnit(testCase)
+import Test.HUnit((@?=))
 
-import Control.Arrow
-
-import Data.Array.IArray
-
-import PathFindingCore.PathingMap.Coordinate
+import PathFindingCore.PathingMap.Coordinate(Breadcrumb(Crumb, Source), breadcrumbsToList, Coordinate(Coord))
 
 tests = testGroup "Test breadcrumbs" [
    testIt "Simple source 1"  (Source $ Coord 0 0)                                         [Coord 0 0]
@@ -18,7 +14,7 @@ tests = testGroup "Test breadcrumbs" [
  , testIt "Three-item crumb" (Crumb (Coord 1 7) $ Crumb (Coord 0 0) $ Source $ Coord 3 8) [(Coord 3 8), (Coord 0 0), (Coord 1 7)]
  ]
 
-testIt :: String -> Breadcrumb -> [Coordinate] -> API.Test
+testIt :: String -> Breadcrumb -> [Coordinate] -> Test
 testIt desc crumbs coords = testCase desc assertion
   where
     assertion = (breadcrumbsToList crumbs) @?= coords

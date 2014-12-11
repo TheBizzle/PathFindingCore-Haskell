@@ -1,18 +1,18 @@
 module PathingMapTests where
 
-import Test.Framework.Providers.API as API
-import Test.Framework.Providers.HUnit
-import Test.HUnit
+import Test.Framework.Providers.API(Test, testGroup)
+import Test.Framework.Providers.HUnit(testCase)
+import Test.HUnit((@?=))
 
-import Control.Arrow
+import Control.Arrow((>>>))
 
-import Data.Array.IArray
+import Data.Array.IArray()
 
-import PathFindingCore.PathingMap.Coordinate
-import PathFindingCore.PathingMap.Direction
-import PathFindingCore.PathingMap.Interpreter
-import PathFindingCore.PathingMap.Terrain
-import PathFindingCore.PathingMap
+import PathFindingCore.PathingMap.Coordinate(Coordinate(Coord))
+import PathFindingCore.PathingMap.Direction(Direction(East, North, South, West))
+import PathFindingCore.PathingMap.Interpreter(fromMapString, grid, PathingGrid, PathingMapString(PathingMapString))
+import PathFindingCore.PathingMap.Terrain(Terrain(Empty, Wall))
+import PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsGoal, neighborsOf, step)
 
 tests = testGroup "Test interpreter" [
    testInterpreter "getTerrain 1"  (getTerrain  $ Coord 9001 9001) Nothing
@@ -35,7 +35,7 @@ tests = testGroup "Test interpreter" [
    cPath1 = [(Coord 4 3), (Coord 4 2)]
    cPath2 = [(Coord 2 1), (Coord 2 0), (Coord 3 0)]
 
-testInterpreter :: (Eq t, Show t) => String -> (PathingGrid -> t) -> t -> API.Test
+testInterpreter :: (Eq t, Show t) => String -> (PathingGrid -> t) -> t -> Test
 testInterpreter desc genActual expected = testCase desc assertion
   where
     grid      = gridFromString " DGD | DDD |%%%% |DD %%|*D  %"
