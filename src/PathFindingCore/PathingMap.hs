@@ -25,7 +25,7 @@ getTerrain :: Coordinate -> PathingGrid -> Maybe Terrain
 getTerrain coord@(Coord x y) grid = if isInBounds then Just $ grid ! coord else Nothing
   where
     (Coord x1 y1, Coord x2 y2) = bounds grid
-    isInBounds                 = (x >= x1) && (x <= x2) && (y >= y1) && (y <= y2)
+    isInBounds                 = and [x >= x1, x <= x2, y >= y1, y <= y2]
 
 neighborsOf :: Coordinate -> PathingGrid -> [Coordinate]
 neighborsOf coordinate grid = directions |> ((fmap $ findNeighborCoord coordinate) >>> (filter canTravelTo))
@@ -44,11 +44,10 @@ insertPath coords grid = grid // (fmap f coords)
     f coord = (coord, Path)
 
 findNeighborCoord :: Coordinate -> Direction -> Coordinate
-findNeighborCoord (Coord x y) dir = case dir of
-  North -> Coord x       (y + 1)
-  South -> Coord x       (y - 1)
-  East  -> Coord (x + 1) y
-  West  -> Coord (x - 1) y
+findNeighborCoord (Coord x y) North = Coord  x     (y + 1)
+findNeighborCoord (Coord x y) South = Coord  x     (y - 1)
+findNeighborCoord (Coord x y) East  = Coord (x + 1) y
+findNeighborCoord (Coord x y) West  = Coord (x - 1) y
 
 findDirection :: Coordinate -> Coordinate -> Direction
 findDirection startCoord@(Coord x1 y1) endCoord@(Coord x2 y2)

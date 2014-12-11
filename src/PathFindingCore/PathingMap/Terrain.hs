@@ -1,5 +1,6 @@
 module PathFindingCore.PathingMap.Terrain where
 
+import Control.Applicative(pure)
 import Control.Arrow
 
 data Terrain
@@ -15,16 +16,16 @@ data Terrain
   | Water deriving (Eq)
 
 isPassable :: Terrain -> Bool
-isPassable Ant     = True
-isPassable Empty   = True
-isPassable Food    = True
-isPassable Goal    = True
-isPassable Mound   = True
-isPassable Path    = False
-isPassable Query   = False
-isPassable Self    = False
-isPassable Wall    = False
-isPassable Water   = False
+isPassable Ant   = True
+isPassable Empty = True
+isPassable Food  = True
+isPassable Goal  = True
+isPassable Mound = True
+isPassable Path  = False
+isPassable Query = False
+isPassable Self  = False
+isPassable Wall  = False
+isPassable Water = False
 
 charToTerrain :: Char -> Terrain
 charToTerrain 'a' = Ant
@@ -40,18 +41,16 @@ charToTerrain '%' = Water
 charToTerrain x   = error $ "Cannot convert '" ++ (show x) ++ "' to a terrain"
 
 terrainToChar :: Terrain -> Char
-terrainToChar Ant     = 'a'
-terrainToChar Empty   = ' '
-terrainToChar Food    = 'f'
-terrainToChar Goal    = 'G'
-terrainToChar Mound   = 'O'
-terrainToChar Path    = 'x'
-terrainToChar Query   = '.'
-terrainToChar Self    = '*'
-terrainToChar Wall    = 'D'
-terrainToChar Water   = '%'
+terrainToChar Ant   = 'a'
+terrainToChar Empty = ' '
+terrainToChar Food  = 'f'
+terrainToChar Goal  = 'G'
+terrainToChar Mound = 'O'
+terrainToChar Path  = 'x'
+terrainToChar Query = '.'
+terrainToChar Self  = '*'
+terrainToChar Wall  = 'D'
+terrainToChar Water = '%'
 
 instance Show Terrain where
-  show = terrainToChar >>> singleton
-    where
-      singleton x = [x]
+  show = terrainToChar >>> pure
