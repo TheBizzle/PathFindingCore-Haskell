@@ -3,6 +3,7 @@ module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsG
 
 import Control.Arrow((>>>))
 import Data.Array.IArray((!), (//), assocs, bounds)
+import Data.Foldable(fold)
 import Data.List(sortBy)
 import Data.List.Split(chunksOf)
 import Data.Maybe(fromMaybe)
@@ -57,7 +58,7 @@ findDirection startCoord@(Coord x1 y1) endCoord@(Coord x2 y2)
     | otherwise    = error $ printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord)
 
 instance Show PrintablePathingGrid where
-  show (PPG grid) = foldr (++) [] lines
+  show (PPG grid) = fold lines
     where
       maxX   = grid |> (bounds >>> snd >>> x >>> (+1))
       str    = grid |> (assocs >>> (sortBy sillySort) >>> (fmap $ snd >>> terrainToChar))

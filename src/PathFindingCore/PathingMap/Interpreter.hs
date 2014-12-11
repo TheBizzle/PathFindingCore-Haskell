@@ -2,6 +2,7 @@ module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, Pathin
 
 import Control.Arrow((>>>))
 import Data.Array.IArray(Array, assocs, listArray)
+import Data.Foldable(fold)
 import Data.List(isSuffixOf)
 import Data.List.Split(splitOn)
 
@@ -40,7 +41,7 @@ fromMapString (PathingMapString str delim) = PathingMapData start goal grid
 strListToGrid :: [String] -> PathingGrid
 strListToGrid strList = listArray (Coord 0 0, endCoord) terrains
   where
-    str      = foldr (++) [] $ rotateClockwise strList
+    str      = fold $ rotateClockwise strList
     terrains = fmap charToTerrain str
     length'  = length >>> (subtract 1)
     xLength  = strList |> (last >>> length')
