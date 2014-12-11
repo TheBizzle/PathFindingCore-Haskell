@@ -3,5 +3,7 @@
 *.hi
 *.o
 
+/.cabal-sandbox
 /.projections.json
+/cabal.sandbox.config
 /dist
