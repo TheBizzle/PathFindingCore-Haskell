@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances, TupleSections #-}
 module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsGoal, neighborsOf, PrintablePathingGrid(..), step) where
 
 import Control.Arrow((>>>))
@@ -39,9 +39,7 @@ markAsGoal :: Coordinate -> PathingGrid -> PathingGrid
 markAsGoal coord grid = grid // [(coord, Goal)]
 
 insertPath :: [Coordinate] -> PathingGrid -> PathingGrid
-insertPath coords grid = grid // (fmap f coords)
-  where
-    f coord = (coord, Path)
+insertPath coords grid = grid // (fmap (, Path) coords)
 
 findNeighborCoord :: Coordinate -> Direction -> Coordinate
 findNeighborCoord (Coord x y) North = Coord  x     (y + 1)
