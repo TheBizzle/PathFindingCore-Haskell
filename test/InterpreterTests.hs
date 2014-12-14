@@ -1,8 +1,7 @@
 module InterpreterTests where
 
-import Test.Framework.Providers.API(Test, testGroup)
-import Test.Framework.Providers.HUnit(testCase)
-import Test.HUnit((@?=))
+import Test.Tasty(testGroup, TestTree)
+import Test.Tasty.HUnit((@?=), testCase)
 
 import Data.Array.IArray(listArray)
 
@@ -34,7 +33,7 @@ tests = testGroup "Test interpreter" [
              \OG% %|\
              \%    |"
 
-testInterpreter :: String -> String -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> Test
+testInterpreter :: String -> String -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> TestTree
 testInterpreter desc strGrid (x1, y1) (x2, y2) (ux, uy) arr = testCase desc assertion
   where
     pmStr     = PathingMapString strGrid "|"

@@ -1,8 +1,7 @@
 module BreadcrumbTests where
 
-import Test.Framework.Providers.API(Test, testGroup)
-import Test.Framework.Providers.HUnit(testCase)
-import Test.HUnit((@?=))
+import Test.Tasty(testGroup, TestTree)
+import Test.Tasty.HUnit((@?=), testCase)
 
 import PathFindingCore.PathingMap.Coordinate(Breadcrumb(Crumb, Source), breadcrumbsToList, Coordinate(Coord))
 
@@ -14,7 +13,7 @@ tests = testGroup "Test breadcrumbs" [
  , testIt "Three-item crumb" (Crumb (Coord 1 7) $ Crumb (Coord 0 0) $ Source $ Coord 3 8) [(Coord 3 8), (Coord 0 0), (Coord 1 7)]
  ]
 
-testIt :: String -> Breadcrumb -> [Coordinate] -> Test
+testIt :: String -> Breadcrumb -> [Coordinate] -> TestTree
 testIt desc crumbs coords = testCase desc assertion
   where
     assertion = (breadcrumbsToList crumbs) @?= coords

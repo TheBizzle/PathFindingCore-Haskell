@@ -1,8 +1,7 @@
 module PathingMapTests where
 
-import Test.Framework.Providers.API(Test, testGroup)
-import Test.Framework.Providers.HUnit(testCase)
-import Test.HUnit((@?=))
+import Test.Tasty(testGroup, TestTree)
+import Test.Tasty.HUnit((@?=), testCase)
 
 import Control.Arrow((>>>))
 
@@ -35,7 +34,7 @@ tests = testGroup "Test interpreter" [
    cPath1 = [(Coord 4 3), (Coord 4 2)]
    cPath2 = [(Coord 2 1), (Coord 2 0), (Coord 3 0)]
 
-testInterpreter :: (Eq t, Show t) => String -> (PathingGrid -> t) -> t -> Test
+testInterpreter :: (Eq t, Show t) => String -> (PathingGrid -> t) -> t -> TestTree
 testInterpreter desc genActual expected = testCase desc assertion
   where
     grid      = gridFromString " DGD | DDD |%%%% |DD %%|*D  %"

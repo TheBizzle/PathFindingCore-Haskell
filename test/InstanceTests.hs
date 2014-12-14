@@ -1,8 +1,7 @@
 module InstanceTests where
 
-import Test.Framework.Providers.API(Test, testGroup)
-import Test.Framework.Providers.HUnit(testCase)
-import Test.HUnit((@?=))
+import Test.Tasty(testGroup, TestTree)
+import Test.Tasty.HUnit((@?=), testCase)
 
 import Control.Arrow((>>>))
 
@@ -46,7 +45,7 @@ tests = testGroup "Test instances" [
                 \|D DDDD|\n\
                 \+------+"
 
-testPPGInstance :: String -> String -> String -> Test
+testPPGInstance :: String -> String -> String -> TestTree
 testPPGInstance desc strGrid expected = testCase desc assertion
   where
     actual    = strGrid |> ((flip PathingMapString "|") >>> fromMapString >>> grid >>> PPG >>> show)
