@@ -1,6 +1,6 @@
 module PathFindingTest.TestSet(PathingMapTest(..), tests) where
 
-import PathFindingCore.PathingMap.Interpreter(PathingMapString(..))
+import PathFindingCore.PathingMap.Interpreter(PathingMapString(PathingMapString))
 
 data PathingMapTest = PathingMapTest { dist :: Maybe Double, pathingMapStr :: PathingMapString }
 
@@ -11,7 +11,7 @@ tests = [testMap1,  testMap2,  testMap3,  testMap4,  testMap5,  testMap6,  testM
         ,testMap31, testMap32, testMap33, testMap34, testMap35, testMap36, testMap37, testMap38, testMap39
         ]
 
-pms :: String -> String -> PathingMapString
+pms :: Text -> Text -> PathingMapString
 pms = flip PathingMapString
 
 testMap1 :: PathingMapTest

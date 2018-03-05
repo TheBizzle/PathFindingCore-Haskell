@@ -1,14 +1,10 @@
-module InstanceTests where
+module InstanceTests(tests) where
 
 import Test.Tasty(testGroup, TestTree)
 import Test.Tasty.HUnit((@?=), testCase)
 
-import Control.Arrow((>>>))
-
 import PathFindingCore.PathingMap(PrintablePathingGrid(PPG))
 import PathFindingCore.PathingMap.Interpreter(fromMapString, grid, PathingMapString(PathingMapString))
-
-a |> f = f a
 
 tests = testGroup "Test instances" [
    testPPGInstance "Show PPG 1" " "     expected1
@@ -45,8 +41,8 @@ tests = testGroup "Test instances" [
                 \|D DDDD|\n\
                 \+------+"
 
-testPPGInstance :: String -> String -> String -> TestTree
-testPPGInstance desc strGrid expected = testCase desc assertion
+testPPGInstance :: Text -> Text -> Text -> TestTree
+testPPGInstance desc strGrid expected = testCase (asString desc) assertion
   where
-    actual    = strGrid |> ((flip PathingMapString "|") >>> fromMapString >>> grid >>> PPG >>> show)
+    actual    = strGrid |> ((flip PathingMapString "|") >>> fromMapString >>> grid >>> PPG >>> showText)
     assertion = actual @?= expected

@@ -1,6 +1,7 @@
 module PathFindingCore.PathingMap.Coordinate where
 
 import Data.Ix(Ix)
+import Data.List(reverse)
 
 data Coordinate
   = Coord { x :: Int, y :: Int } deriving (Eq, Ix, Ord, Show)

@@ -1,4 +1,4 @@
-module BreadcrumbTests where
+module BreadcrumbTests(tests) where
 
 import Test.Tasty(testGroup, TestTree)
 import Test.Tasty.HUnit((@?=), testCase)
@@ -13,7 +13,7 @@ tests = testGroup "Test breadcrumbs" [
  , testIt "Three-item crumb" (Crumb (Coord 1 7) $ Crumb (Coord 0 0) $ Source $ Coord 3 8) [(Coord 3 8), (Coord 0 0), (Coord 1 7)]
  ]
 
-testIt :: String -> Breadcrumb -> [Coordinate] -> TestTree
-testIt desc crumbs coords = testCase desc assertion
+testIt :: Text -> Breadcrumb -> [Coordinate] -> TestTree
+testIt desc crumbs coords = testCase (asString desc) assertion
   where
     assertion = (breadcrumbsToList crumbs) @?= coords

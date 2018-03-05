@@ -1,25 +1,18 @@
 {-# LANGUAGE FlexibleInstances, TupleSections #-}
 module PathFindingCore.PathingMap(findDirection, getTerrain, insertPath, markAsGoal, neighborsOf, PrintablePathingGrid(..), step) where
 
-import Control.Arrow((>>>))
 import Data.Array.IArray((!), (//), assocs, bounds)
-import Data.Foldable(fold)
-import Data.List(sortBy)
-import Data.List.Split(chunksOf)
-import Data.Maybe(fromMaybe)
+import Data.List(filter, reverse, sortBy)
+import Data.Text(chunksOf, replicate)
+
 import Text.Printf(printf)
 
-import PathFindingCore.PathingMap.Coordinate(Coordinate(..))
+import PathFindingCore.PathingMap.Coordinate(Coordinate(Coord, x))
 import PathFindingCore.PathingMap.Direction(Direction(East, North, South, West), directions)
 import PathFindingCore.PathingMap.Interpreter(PathingGrid)
 import PathFindingCore.PathingMap.Terrain(isPassable, Terrain(Goal, Path, Query, Self), terrainToChar)
 
-data PrintablePathingGrid
-  = PPG {
-      pathingGrid :: PathingGrid
-    }
-
-a |> f = f a
+newtype PrintablePathingGrid = PPG PathingGrid
 
 getTerrain :: Coordinate -> PathingGrid -> Maybe Terrain
 getTerrain coord@(Coord x y) grid = if isInBounds then Just $ grid ! coord else Nothing
@@ -53,22 +46,22 @@ findDirection startCoord@(Coord x1 y1) endCoord@(Coord x2 y2)
     | y2 == y1 - 1 = South
     | x2 == x1 + 1 = East
     | x2 == x1 - 1 = West
-    | otherwise    = error $ printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord)
+    | otherwise    = error $ asText $ printf "Cannot find direction to non-adjacent coordinates (start: %s, end: %s)" (show startCoord) (show endCoord)
 
 instance Show PrintablePathingGrid where
-  show (PPG grid) = fold lines
+  show (PPG grid) = asString $ fold lines
     where
       maxX   = grid |> (bounds >>> snd >>> x >>> (+1))
-      str    = grid |> (assocs >>> (sortBy sillySort) >>> (fmap $ snd >>> terrainToChar))
-      lines  = str  |> ((chunksOf maxX) >>> reverse >>> (makeLinesPretty maxX))
+      text   = grid |> (assocs >>> (sortBy sillySort) >>> (fmap $ snd >>> terrainToChar) >>> asText)
+      lines  = text |> ((chunksOf maxX) >>> reverse >>> (makeLinesPretty maxX))
 
-makeLinesPretty :: Int -> [String] -> [String]
+makeLinesPretty :: Int -> [Text] -> [Text]
 makeLinesPretty maxX lines = concat [[topB], linesB, [botB]]
   where
-    linesB = fmap (\x -> "|" ++ x ++ "|\n") lines
-    border = replicate maxX '-'
-    topB   = concat ["+", border, "+", "\n"]
-    botB   = concat ["+", border, "+"]
+    linesB = fmap (\x -> "|" <> x <> "|\n") lines
+    border = replicate maxX "-"
+    topB   = "+" <> border <> "+" <> "\n"
+    botB   = "+" <> border <> "+"
 
 sillySort :: (Coordinate, Terrain) -> (Coordinate, Terrain) -> Ordering
 sillySort (Coord x1 y1, _) (Coord x2 y2, _) =

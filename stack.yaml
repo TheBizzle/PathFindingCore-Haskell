@@ -1,0 +1,11 @@
+resolver: lts-10.8
+
+packages:
+- .
+
+extra-deps:
+- base-noprelude-4.10.1.0
+- bizzlelude-1.1.0
+- tasty-1.0.1
+- tasty-hunit-0.10.0.1
+- text-1.2.3.0

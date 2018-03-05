@@ -1,9 +1,7 @@
 module PathFindingCore.PathingMap.Interpreter(fromMapString, PathingGrid, PathingMapString(..), PathingMapData(..)) where
 
-import Control.Arrow((>>>))
 import Data.Array.IArray(Array, assocs, listArray)
-import Data.Foldable(fold)
-import Data.List(isSuffixOf)
+import Data.List(drop, isSuffixOf, last, reverse, unzip)
 import Data.List.Split(splitOn)
 
 import PathFindingCore.PathingMap.Coordinate(Coordinate(Coord))
@@ -13,8 +11,8 @@ type PathingGrid = Array Coordinate Terrain
 
 data PathingMapString
   = PathingMapString {
-      str   :: String,
-      delim :: String
+      str   :: Text,
+      delim :: Text
     } deriving (Eq)
 
 data PathingMapData
@@ -24,13 +22,12 @@ data PathingMapData
       grid  :: PathingGrid
     } deriving (Eq, Show)
 
-a |> f = f a
-
 fromMapString :: PathingMapString -> PathingMapData
 fromMapString (PathingMapString ""  _)     = error "Cannot build map from empty string"
 fromMapString (PathingMapString str delim) = PathingMapData start goal grid
   where
-    grid          = str |> ((dropDelim delim) >>> (splitOn delim) >>> strListToGrid)
+    sDelim        = asString delim
+    grid          = str |> (asString >>> (dropDelim sDelim) >>> (splitOn sDelim) >>> strListToGrid)
     (start, goal) = findStartAndGoal grid
     dropDelim d s = if (isSuffixOf d s) then s |> (reverse >>> (drop $ length d) >>> reverse) else s
 
@@ -51,9 +48,11 @@ strListToGrid strList = listArray (Coord 0 0, endCoord) terrains
 findStartAndGoal :: PathingGrid -> (Coordinate, Coordinate)
 findStartAndGoal arr = analyzeResult $ foldr findBest (Nothing, Nothing) (assocs arr)
   where
+
     findBest (coord, Self) (_, g) = (Just coord, g)
     findBest (coord, Goal) (s, _) = (s,          Just coord)
     findBest _             (s, g) = (s,          g)
+
     analyzeResult (Nothing,    _      )   = error "No start in given grid."
     analyzeResult (_,          Nothing)   = error "No goal in given grid."
     analyzeResult (Just start, Just goal) = (start, goal)

@@ -1,8 +1,5 @@
 module PathFindingCore.PathingMap.Terrain where
 
-import Control.Applicative(pure)
-import Control.Arrow((>>>))
-
 data Terrain
   = Ant
   | Empty
@@ -38,7 +35,7 @@ charToTerrain '.' = Query
 charToTerrain '*' = Self
 charToTerrain 'D' = Wall
 charToTerrain '%' = Water
-charToTerrain x   = error $ "Cannot convert '" ++ (show x) ++ "' to a terrain"
+charToTerrain x   = error $ "Cannot convert '" <> (showText x) <> "' to a terrain"
 
 terrainToChar :: Terrain -> Char
 terrainToChar Ant   = 'a'

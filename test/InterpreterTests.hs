@@ -1,4 +1,4 @@
-module InterpreterTests where
+module InterpreterTests(tests) where
 
 import Test.Tasty(testGroup, TestTree)
 import Test.Tasty.HUnit((@?=), testCase)
@@ -33,8 +33,8 @@ tests = testGroup "Test interpreter" [
              \OG% %|\
              \%    |"
 
-testInterpreter :: String -> String -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> TestTree
-testInterpreter desc strGrid (x1, y1) (x2, y2) (ux, uy) arr = testCase desc assertion
+testInterpreter :: Text -> Text -> (Int, Int) -> (Int, Int) -> (Int, Int) -> [Terrain] -> TestTree
+testInterpreter desc strGrid (x1, y1) (x2, y2) (ux, uy) arr = testCase (asString desc) assertion
   where
     pmStr     = PathingMapString strGrid "|"
     grid      = listArray (Coord 0 0, Coord ux uy) arr
