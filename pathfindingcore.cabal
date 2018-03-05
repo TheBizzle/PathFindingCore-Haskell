@@ -8,7 +8,6 @@ Maintainer:          jason.bertsche@gmail.com
 Homepage:            http://github.com/TheBizzle
 Category:            Demo
 Synopsis:            A toy pathfinding library
-Description:         A toy pathfinding library
 Build-type:          Simple
 
 source-repository head
